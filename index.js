@@ -2,11 +2,11 @@
 const express = require("express");
 const app = express();
 const bodyparser = require("body-parser"); // para conseguir receber os dados do front e trabalhar no back
-const connection = require('./database/database') // importa o arquivo de database para que possamos criar,deletar e fazer tudo com o banco
-const model = require('./database/Pergunta_Database_Model')// importa o database model
+//const connection = require('./database/database') // importa o arquivo de database para que possamos criar,deletar e fazer tudo com o banco
+//const model = require('./database/Pergunta_Database_Model')// importa o database model
 
 //Configuracao do database
-connection
+/*connection
     .authenticate()
     .then(() =>{
         console.log('Conexao feita com o banco de dados!');
@@ -14,7 +14,7 @@ connection
     .catch((msgErro) => {
         console.log(msgErro);
     })
-
+*/
 app.set('view engine','ejs');
 app.use(express.static("public"));
 
@@ -39,12 +39,12 @@ app.get("/perguntar",function(req,res){
 app.post("/salvarpergunta", function(req, res){
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
-    model.create({
-        titulo: titulo,
-        descricao: descricao
-    }).then(() => {
+//    model.create({
+ //       titulo: titulo,
+ //       descricao: descricao
+//    }).then(() => {
         res.redirect("/");
-    });
+ //   });
 
 });
 
