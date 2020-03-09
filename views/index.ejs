@@ -6,8 +6,23 @@
     <%- include ('partials/navbar.ejs'); %> <%# inclui a navbar que contem o logo %> 
 
  <div class="container">
-     <h1>Bem vindo a pagina inicial do Perguntas e Respostas</h1>
-     <a href="/perguntar">Faça sua pergunta aqui!</a>
- </div>
+    <h1>Bem vindo a pagina inicial do Perguntas e Respostas</h1>
+    <a href="/perguntar">Faça sua pergunta aqui!</a>
+
+    <% dados_do_banco.forEach(pergunta => { %>
+        <br>
+    <div class="card">
+        <div class="body-card">
+            <h3><p> Titulo da pergunta: <%= pergunta.titulo  %></p></h3>
+            <h5><p> Titulo da pergunta: <%= pergunta.descricao  %></p></h5>
+
+        </div>
+            
+            <div class="footer-card">
+                <button class="btn btn-primary">Responder</button>
+        </div>
+    </div>
+    <% }); %>
+</div>
 </body>
 <%- include ('partials/footer.ejs'); %> <%# inclui o rodapé %> 
