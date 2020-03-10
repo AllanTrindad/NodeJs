@@ -1,8 +1,8 @@
-//Um model é: É uma estrutura de dados que representa minha tabela do Banco de Dados
+//Um Model é: É uma estrutura de dados que representa minha tabela do Banco de Dados
 const sequelize = require('sequelize');
 const connection = require('./database');
 
-const model = connection.define('perguntas',{
+const Model = connection.define('perguntas',{
     titulo:{
         type: sequelize.STRING,
         allowNull: false
@@ -13,6 +13,6 @@ const model = connection.define('perguntas',{
     }
 });
 
-model.sync({force: false}).then(()=>{});
+Model.sync({force: false}).then(()=>{});
 
-module.exports = model;
+module.exports = Model; // exportando a variavel Model que contem as funcoes do sequelize

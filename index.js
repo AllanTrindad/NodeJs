@@ -2,8 +2,10 @@
 const express = require("express");
 const app = express();
 const bodyparser = require("body-parser"); // para conseguir receber os dados do front e trabalhar no back
-const connection = require('./database/database') // importa o arquivo de database para que possamos criar,deletar e fazer tudo com o banco
-const model = require('./database/Pergunta_Database_Model')// importa o database model
+const connection = require('./database/database'); // importa o arquivo de database para que possamos criar,deletar e fazer tudo com o banco
+const Model = require('./database/Pergunta_Database_Model');// importa o database Model da pergunta
+const Resposta = require('./database/Resposta_Database_Model'); // importa o database Model da Resposta
+
 
 //Configuracao do database
 connection
@@ -25,7 +27,7 @@ app.use(bodyparser.json());
 
 //Minha rota Raiz
 app.get("/",function(req, res){
-    model.findAll({raw: true, order:[
+    Model.findAll({raw: true, order:[
         ['id','DESC'] // Ordenando por decrescente <== do maior para o menor, ASC == Crescente <== do menor pro maior
     ]}).then(dados_do_banco_raw =>{ //findALL tras tudo do banco e o método raw trás somente as informacoes das colunas
     // como eu só tenho uma tabela eu nao preciso me preocupar em definir quais os dados e quais tabelas eu quero a informação
@@ -41,11 +43,11 @@ app.get("/perguntar",function(req,res){
 
     });
 });
-// essa rota recebe os dados enviados pelo formulario de perguntas e respostas
+// essa rota recebe os dados enviados pelo formulario de perguntas e Respostas
 app.post("/salvarpergunta", function(req, res){
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
-    model.create({
+    Model.create({
         titulo: titulo,
         descricao: descricao
     }).then(() => {
@@ -53,15 +55,30 @@ app.post("/salvarpergunta", function(req, res){
     });
 });
 
-app.get("/pagina-perguntas/:id", function(req, res){
-    var id = req.params.id;
-    model.findOne({    //fazendo a pesquisa no banco por um unico valor
+app.post("/salvarResposta", function(req, res){
+    var corpo = req.body.corpo; // aparentemente essa variavel tem que estar igual ao model
+    var pergunta_Id = req.body.pergunta_Id;
+    Resposta.create({
+        corpo: corpo, // a primeira variavel tem que estar igual ap campo do Model
+        perguntaId: pergunta_Id
+    }).then(() => {
+        res.redirect("/pagina-perguntas/"+pergunta_Id);
+    });
+
+});
+
+
+app.get("/pagina-perguntas/:id", function(req, res){ // rota criada para ter uma pagina somente da pergunta especifica
+    var id = req.params.id; // pega o id digitado pelo usuario e salva na variavel
+    Model.findOne({    //fazendo a pesquisa no banco por um unico valor
         where: {id: id}, //comparando se o valor id recebido se encontra no DB\
     }).then(pergunta =>{
-        if (pergunta != undefined) { 
-            res.render("./pag_perguntas")
+        if (pergunta != undefined) {  //se o valor for encontrado ou diferente de undifined renderiza a rota
+            res.render("./pag_perguntas",{
+                pergunta: pergunta
+            });
         }else{
-            res.redirect("/")
+            res.redirect("/") // caso nao exista redireciona para a raiz
         }
 });
 });

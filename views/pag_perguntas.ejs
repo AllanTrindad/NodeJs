@@ -1,1 +1,23 @@
-<h1> Pagina da pergunta</h1>
+<!DOCTYPE html>
+<html lang="en">
+</html>
+<%- include ('partials/header.ejs'); %> 
+
+<body>
+    <%- include ('partials/navbar.ejs'); %> 
+    <div class="container">
+        <hr>
+        <h1> <%= pergunta.titulo %> </h1>
+        <p><%= pergunta.descricao %></p>
+        <hr>
+        <form method="POST" action="/salvarResposta">
+            <label>Resposta</label>
+            <textarea placeholder="Responda aqui!" class="form-control" name="corpo"></textarea>
+            <br>
+            <button type="submit" class="btn btn-primary">Responder</button>
+            <input type="hidden" name="pergunta_Id" value="<%= pergunta.id%>">
+        </form>
+    </div>  
+</body>
+
+<%- include ('partials/footer.ejs'); %> 

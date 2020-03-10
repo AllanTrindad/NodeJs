@@ -17,9 +17,10 @@
             <h5><p> Titulo da pergunta: <%= pergunta.descricao  %></p></h5>
 
         </div>
-            
-            <div class="footer-card">
-                <button class="btn btn-primary">Responder</button>
+        <div class="footer-card">
+            <a href="/pagina-perguntas/<%= pergunta.id%>">
+            <button class="btn btn-primary" >Responder</button>
+        </a>
         </div>
     </div>
     <% }); %>
