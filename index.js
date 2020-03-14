@@ -73,10 +73,19 @@ app.get("/pagina-perguntas/:id", function(req, res){ // rota criada para ter uma
     Model.findOne({    //fazendo a pesquisa no banco por um unico valor
         where: {id: id}, //comparando se o valor id recebido se encontra no DB\
     }).then(pergunta =>{
-        if (pergunta != undefined) {  //se o valor for encontrado ou diferente de undifined renderiza a rota
-            res.render("./pag_perguntas",{
-                pergunta: pergunta
+        if (pergunta != undefined){  //se o valor for encontrado ou diferente de undifined renderiza a rota
+            
+            Resposta.findAll({ 
+                where: {perguntaId: pergunta.id},
+                order:[ ['id','DESC'] ]
+            }).then(respostas => {
+                res.render("./pag_perguntas",{
+                    pergunta: pergunta,
+                    respostas: respostas
+                });
+
             });
+
         }else{
             res.redirect("/") // caso nao exista redireciona para a raiz
         }
